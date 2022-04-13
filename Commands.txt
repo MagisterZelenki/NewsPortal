@@ -1,0 +1,58 @@
+from news.models import *
+from django.contrib.auth.models import User
+user1 = User.objects.create_user(username='Heralt')
+user2 = User.objects.create_user(username='Tsiri')
+Author.objects.create(authorUser=user2)
+Author.objects.create(authorUser=user1)
+Category.objects.create(name='Sports')
+Category.objects.create(name='Politics')
+Category.objects.create(name='NoWar')
+Category.objects.create(name='Piece')
+author = Author.objects.get(id=1)
+author1=Author.objects.get(id=1)
+Post.objects.create(author=author, categoryType='AR', postTitle='NoWar', postText='NoWartoUkraine')
+Post.objects.create(author=author, categoryType='AR', postTitle='NoWar', postText='NoWartoUkraine')
+Post.objects.create(author=author, categoryType='NS', postTitle='SportsNews', postText='NewstoSports')
+Post.objects.create(author=author1, categoryType='AR', postTitle='NoWar', postText='NoWartoUkraine')
+Post.objects.get(id=1).postCategory.add(Category.objects.get(id=4))
+Post.objects.get(id=1).postCategory.add(Category.objects.get(id=3))
+Post.objects.get(id=2).postCategory.add(Category.objects.get(id=1))
+Comment.objects.create(commentPost=Post.objects.get(id=2), commentUser=Author.objects.get(id=1).authorUser, commentText='iHateWar')
+Comment.objects.create(commentPost=Post.objects.get(id=2), commentUser=Author.objects.get(id=1).authorUser, commentText='LovePiece')
+Comment.objects.create(commentPost=Post.objects.get(id=1), commentUser=Author.objects.get(id=2).authorUser, commentText='SportIsLieve')
+Comment.objects.create(commentPost=Post.objects.get(id=1), commentUser=Author.objects.get(id=2).authorUser, commentText='SportSport')
+Comment.objects.get(id=1).like()
+Post.objects.get(id=1).like()
+Post.objects.get(id=2).dislike()
+Post.objects.get(id=2).like()
+Post.objects.get(id=2).like()
+Post.objects.get(id=3).like()
+Post.objects.get(id=3).like()
+Post.objects.get(id=3).like()
+Post.objects.get(id=4).like()
+Post.objects.get(id=4).like()
+Comment.objects.get(id=2).like()
+Comment.objects.get(id=3).dislike()
+Comment.objects.get(id=4).like()
+Comment.objects.get(id=1).like()
+ar1 = Author.objects.get(id=1)
+ar1.update_rating
+a = Author.objects.order_by('-ratingAuthor')[:1]
+for i in a:
+    i.ratingAuthor
+    i.authorUser.username
+bestPost = Post.objects.all().order_by('-rating')[0]
+print('Автор лучшей статьи:', bestPost.author.authorUser.username)
+>>> a = Post.objects.filter(categoryType='AR').order_by('-rating')[:1]
+>>> for i in a:
+...     i.dateCreation.strftime("%Y-%m-%d")
+...     i.author.authorUser.username
+...     i.rating
+...     i.postTitle
+...     i.preview()
+	  c = Comment.objects.filter(commentPost=best_ar_id)
+for i in c:
+	i.dateCreation.strftime("%Y-%m-%d")
+	i.commentUser.username
+	i.rating
+	i.postText
