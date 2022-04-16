@@ -5,14 +5,14 @@ from django.db.models import Sum
 
 class Author(models.Model):
     authorUser = models.OneToOneField(User, on_delete=models.CASCADE)
-    ratingAuthor = models.FloatField(default=0.0)
+    ratingAuthor = models.SmallIntegerField(default=0)
 
     def update_rating(self):
-        postRat = self.post_set.aggregate(PostRating=sum('rating'))
+        postRat = self.post_set.aggregate(postRating=Sum('rating'))
         pRat = 0
         pRat += postRat.get('postRating')
 
-        commentRat = self.authorUser.comment_set.aggregate(CommentRating=sum('rating'))
+        commentRat = self.authorUser.comment_set.aggregate(commentRating=Sum('rating'))
         cRat = 0
         cRat += commentRat.get('commentRating')
 
@@ -26,6 +26,7 @@ class Category(models.Model):
 
 class Post(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
+
     NEWS = 'NS'
     ARTICLE = 'AR'
     CATEGORY_CHOICES = ((NEWS, 'новость'),
@@ -37,7 +38,7 @@ class Post(models.Model):
     postCategory = models.ManyToManyField(Category, through='PostCategory')
     postTitle = models.CharField(max_length=128)
     postText = models.TextField()
-    rating = models.FloatField(default=0.0)
+    rating = models.SmallIntegerField(default=0)
 
     def like(self):
         self.rating += 1
@@ -62,7 +63,7 @@ class Comment(models.Model):
     commentUser = models.ForeignKey(User, on_delete=models.CASCADE)
     commentText = models.CharField(max_length=255)
     commentDate = models.DateTimeField(auto_now_add=True)
-    rating = models.FloatField(default=0.0)
+    rating = models.SmallIntegerField(default=0)
 
     def like(self):
         self.rating += 1
@@ -71,3 +72,4 @@ class Comment(models.Model):
     def dislike(self):
         self.rating -= 1
         self.save()
+
