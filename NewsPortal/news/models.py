@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Sum
+from django.core.validators import MinValueValidator
 
 
 class Author(models.Model):
@@ -19,10 +20,15 @@ class Author(models.Model):
         self.ratingAuthor = pRat * 3 + cRat
         self.save()
 
+    def __str__(self):
+        return self.authorUser
+
 
 class Category(models.Model):
-    name = models.CharField(max_length= 255, unique=True)
+    name = models.CharField(max_length=255, unique=True)
 
+    def __str__(self):
+        return self.name
 
 class Post(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
@@ -51,6 +57,9 @@ class Post(models.Model):
     def preview(self):
         return self.postText[0:125] + '...'
 
+    def __str__(self):
+        return f'{self.postTitle.title()}: {self.postText[:20]}'
+
 
 class PostCategory(models.Model):
     postThrough = models.ForeignKey(Post, on_delete=models.CASCADE)
@@ -73,3 +82,5 @@ class Comment(models.Model):
         self.rating -= 1
         self.save()
 
+    def __str__(self):
+        return f'{self.commentUser}: {self.commentText[0:20]}'

@@ -1,0 +1,40 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+{% load custom_tags %}
+
+{% block title %}
+News
+{% endblock title %}
+
+<!-- В контенте на странице мы выводим все товары -->
+{% block content %}
+<h1>All news</h1>
+ <p>{% current_time '%b %d %Y' %}</p>
+ <p class="lead" >
+     Новостей на странице: {{ object_list|length }}
+ </p>
+{% if news %}
+<table>
+    <tr>
+        <td>Title</td>
+        <td>Date creations</td>
+        <td>Category</td>
+        <td>Text</td>
+        <td>Rating</td>
+    </tr>
+    {% for new in news %}
+    <tr>
+        <td>{{ new.postTitle }}</td>
+        <td>{{ new.dateCreation }}</td>
+        <td>{{ new.categoryType }}</td>
+        <td>{{ new.postText|truncatechars:15 }}</td>
+        <td>{{ new.rating }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<h3> News is gone</h3>
+{% endif %}
+
+{% endblock content %}

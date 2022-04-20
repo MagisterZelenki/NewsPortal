@@ -1,0 +1,18 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+{% load custom_tags %}
+
+{% block title %}
+<h1> This News </h1>
+
+{% endblock title %}
+
+{% block content %}
+<p>{% current_time '%b %d %Y' %}</p>
+<h3>{{ new.postTitle }} </h3>
+<h4>{{ new.postText|censor }} </h4>
+{{ new.dateCreation|date:'M d Y' }}
+Category: {{ new.categoryType }}
+Rating: {{ new.rating }}
+{% endblock content %}
