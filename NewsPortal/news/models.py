@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Sum
+from django.urls import reverse
 from django.core.validators import MinValueValidator
 
 
@@ -21,7 +22,7 @@ class Author(models.Model):
         self.save()
 
     def __str__(self):
-        return self.authorUser
+        return f'{self.authorUser}'
 
 
 class Category(models.Model):
@@ -59,6 +60,9 @@ class Post(models.Model):
 
     def __str__(self):
         return f'{self.postTitle.title()}: {self.postText[:20]}'
+
+    def get_absolute_url(self):
+        return reverse('post_detail', args=[str(self.id)])
 
 
 class PostCategory(models.Model):
